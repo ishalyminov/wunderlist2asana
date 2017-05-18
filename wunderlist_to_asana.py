@@ -1,5 +1,6 @@
 import argparse
 import json
+from operator import itemgetter
 
 import asana
 
@@ -28,9 +29,11 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
 
     workspace_id = get_workspace_id(in_asana_token, in_workspace_name)
     if not workspace_id:
-        raise 'Couldn\'t find workspace "{}" in your Asana (please note it\'s case-sensitive)'.format(in_workspace_name)
+        raise u'Couldn\'t find workspace "{}" in your Asana ' \
+              u'(please note it\'s case-sensitive)'.format(in_workspace_name)
 
     client = asana.Client.access_token(in_asana_token)
+    # Wunderlist list ID --> Asana project ID
     project_mapping = {}
     for project_index, project in enumerate(wunderlist_content['data']['lists']):
         print u'Processing Wunderlist list "{}" ({}/{})'.format(
@@ -44,10 +47,22 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
         )
         project_mapping[project['id']] = result['id']
 
+    # Wunderlist task ID --> note content
     note_mapping = build_note_mapping(wunderlist_content)
+    # Wunderlist task ID --> Asana task ID
+    task_mapping = {}
+    # Wunderlist task ID --> Wunderlist list ID
+    task_project_mapping = {}
 
-    for task_id, task in enumerate(wunderlist_content['data']['tasks']):
-        print u'Processing Wunderlist task "{}" ({}/{})'.format(task['title'], task_id + 1, len(wunderlist_content['data']['tasks']))
+    for task_index, task in enumerate(sorted(
+        wunderlist_content['data']['tasks'],
+        key=itemgetter('created_at')
+    )):
+        print u'Processing Wunderlist task "{}" ({}/{})'.format(
+            task['title'],
+            task_index + 1,
+            len(wunderlist_content['data']['tasks'])
+        )
         task_json = {
             'name': task['title'],
             'projects': [project_mapping[task['list_id']]],
@@ -57,10 +72,31 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
             task_json['due_on'] = task['due_date']
         if task['id'] in note_mapping:
             task_json['notes'] = note_mapping[task['id']]
-        client.tasks.create_in_workspace(
+        result = client.tasks.create_in_workspace(
             workspace_id,
             task_json
         )
+        task_mapping[task['id']] = result['id']
+        task_project_mapping[task['id']] = task['list_id']
+
+    for subtask_id, subtask in enumerate(sorted(
+        wunderlist_content['data']['subtasks'],
+        key=itemgetter('created_at')
+    )):
+        print u'Processing Wunderlist subtask "{}" ({}/{})'.format(
+            subtask['title'],
+            subtask_id + 1,
+            len(wunderlist_content['data']['subtasks'])
+        )
+        subtask_json = {
+            'name': subtask['title'],
+            'projects': [task_project_mapping[subtask['task_id']]],
+            'completed': subtask['completed'],
+            'parent': task_mapping[subtask['task_id']]
+        }
+        if 'due_date' in subtask:
+            subtask_json['due_on'] = subtask['due_date']
+        client.tasks.create_in_workspace(workspace_id, subtask_json)
 
 
 def parse_args():

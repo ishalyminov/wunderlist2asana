@@ -5,7 +5,12 @@ Export your Wunderlist content to Asana
 
 # What you get
 - Wunderlists lists --> Asana projects
-- Wunderlist tasks --> Asana tasks. Due dates, completion status, and comments are preserved
+- Wunderlist tasks --> Asana tasks. Preserved are:
+
+  - subtasks;
+  - due dates;
+  - completion status
+  - notes.
 
 # Usage:
 1. Create your Wunderlist backup (*Account Settings --> Create backup*)
