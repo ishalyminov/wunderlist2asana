@@ -3,6 +3,10 @@
 
 Export your Wunderlist content to Asana
 
+# What you get
+- Wunderlists lists --> Asana projects
+- Wunderlist tasks --> Asana tasks. Due dates, completion status, and comments are preserved
+
 # Usage:
 1. Create your Wunderlist backup (*Account Settings --> Create backup*)
 2. Create your Asana private access token (*My Profile Settings --> Apps --> Manage Developer Apps*)
@@ -10,3 +14,4 @@ Export your Wunderlist content to Asana
 ```sh
 $ pip install -r requirements.txt
 $ python wunderlist2asana.py <Wunderlist backup file> <Asana token> <Asana workspace name>
+```
