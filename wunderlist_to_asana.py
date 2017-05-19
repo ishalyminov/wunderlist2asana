@@ -90,7 +90,6 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
         )
         subtask_json = {
             'name': subtask['title'],
-            'projects': [task_project_mapping[subtask['task_id']]],
             'completed': subtask['completed'],
             'parent': task_mapping[subtask['task_id']]
         }
