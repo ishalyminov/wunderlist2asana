@@ -36,11 +36,11 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
     # Wunderlist list ID --> Asana project ID
     project_mapping = {}
     for project_index, project in enumerate(wunderlist_content['data']['lists']):
-        print u'Processing Wunderlist list "{}" ({}/{})'.format(
+        print (u'Processing Wunderlist list "{}" ({}/{})'.format(
             project['title'],
             project_index + 1,
             len(wunderlist_content['data']['lists'])
-        )
+        ))
         result = client.projects.create_in_workspace(
             workspace_id,
             {'name': project['title']}
@@ -58,11 +58,11 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
         wunderlist_content['data']['tasks'],
         key=itemgetter('created_at')
     )):
-        print u'Processing Wunderlist task "{}" ({}/{})'.format(
+        print (u'Processing Wunderlist task "{}" ({}/{})'.format(
             task['title'],
             task_index + 1,
             len(wunderlist_content['data']['tasks'])
-        )
+        ))
         task_json = {
             'name': task['title'],
             'projects': [project_mapping[task['list_id']]],
@@ -83,11 +83,11 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
         wunderlist_content['data']['subtasks'],
         key=itemgetter('created_at')
     )):
-        print u'Processing Wunderlist subtask "{}" ({}/{})'.format(
+        print (u'Processing Wunderlist subtask "{}" ({}/{})'.format(
             subtask['title'],
             subtask_id + 1,
             len(wunderlist_content['data']['subtasks'])
-        )
+        ))
         subtask_json = {
             'name': subtask['title'],
             'completed': subtask['completed'],
