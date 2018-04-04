@@ -18,5 +18,5 @@ Export your Wunderlist content to Asana
 3. Run the following:
 ```sh
 $ pip install -r requirements.txt
-$ python wunderlist2asana.py <Wunderlist backup file> <Asana token> <Asana workspace name>
+$ python wunderlist_to_asana.py <Wunderlist backup file> <Asana token> <Asana workspace name>
 ```
