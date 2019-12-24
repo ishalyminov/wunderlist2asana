@@ -13,10 +13,10 @@ Export your Wunderlist content to Asana
   - notes.
 
 # Usage:
-1. Create your Wunderlist backup (*Account Settings --> Create backup*)
+1. Create your Wunderlist backup (*Account Settings --> Create export*) - you'll need the `Tasks.json` file
 2. Create your Asana private access token (*My Profile Settings --> Apps --> Manage Developer Apps*)
 3. Run the following:
 ```sh
 $ pip install -r requirements.txt
-$ python wunderlist_to_asana.py <Wunderlist backup file> <Asana token> <Asana workspace name>
+$ python wunderlist_to_asana.py <Wunderlist backup file> <Asana token> <Asana workspace name - must exist already>
 ```
