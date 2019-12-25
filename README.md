@@ -4,16 +4,18 @@
 Export your Wunderlist content to Asana
 
 # What you get
-- Wunderlists lists --> Asana projects
-- Wunderlist tasks --> Asana tasks. Preserved are:
+- Wunderlist lists --> Asana projects
+- Wunderlist tasks --> Asana tasks.
 
-  - subtasks;
-  - due dates;
-  - completion status
+Preserved are:
+
+  - subtasks,
+  - due dates,
+  - completion status,
   - notes.
 
 # Usage:
-1. Create your Wunderlist backup (*Account Settings --> Create export*) - you'll need the `Tasks.json` file
+1. Create your Wunderlist backup (*Account Settings --> Create export*) - you'll need the `Tasks.json` file from the resulting zip
 2. Create your Asana private access token (*My Profile Settings --> Apps --> Manage Developer Apps*)
 3. Run the following:
 ```sh
