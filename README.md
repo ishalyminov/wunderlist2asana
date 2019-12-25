@@ -15,9 +15,10 @@ Preserved are:
   - notes.
 
 # Usage:
-1. Create your Wunderlist backup (*Account Settings --> Create export*) - you'll need the `Tasks.json` file from the resulting zip
-2. Create your Asana private access token (*My Profile Settings --> Apps --> Manage Developer Apps*)
-3. Run the following:
+1. Get `Python` and `pip` for your system (if in doubt, just install [Miniconda](https://docs.conda.io/en/latest/miniconda.html))
+2. Create your Wunderlist backup (*Account Settings --> Create export*) - you'll need the `Tasks.json` file from the resulting zip
+3. Create your Asana private access token (*My Profile Settings --> Apps --> Manage Developer Apps*)
+4. Run the following:
 ```sh
 $ pip install -r requirements.txt
 $ python wunderlist_to_asana.py <Wunderlist backup file> <Asana token> <Asana workspace name - must exist already>
