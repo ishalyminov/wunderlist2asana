@@ -59,7 +59,7 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
             task_json = {
                 'name': task['title'],
                 'projects': [asana_project_id],
-                'completed': task['completed'],
+                'completed': task['completed']
             }
             if 'dueDate' in task:
                 task_json['due_on'] = task['dueDate']
@@ -70,6 +70,13 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
                 task_json
             )
             asana_task_id = result['gid']
+
+            for comment_id, comment in enumerate(sorted(task['comments'], key=itemgetter('createdAt'))):
+                print (u'Processing Wunderlist task\'s comment {}/{}'.format(
+                    comment_id + 1,
+                    len(task['comments'])
+                ))
+                client.tasks.add_comment(asana_task_id, {'text': comment['text']})
 
             for subtask_id, subtask in enumerate(sorted(
                 task['subtasks'],

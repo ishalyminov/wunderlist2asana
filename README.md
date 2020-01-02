@@ -5,14 +5,15 @@ Export your Wunderlist content to Asana
 
 # What you get
 - Wunderlist lists --> Asana projects
-- Wunderlist tasks --> Asana tasks.
+- Wunderlist tasks --> Asana tasks
 
 Preserved are:
 
   - subtasks,
   - due dates,
   - completion status,
-  - notes.
+  - notes,
+  - comments.
 
 # Usage:
 1. Get `Python` and `pip` for your system (if in doubt, just install [Miniconda](https://docs.conda.io/en/latest/miniconda.html))
