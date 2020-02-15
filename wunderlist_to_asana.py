@@ -23,7 +23,7 @@ def build_note_mapping(in_wunderlist_content):
     return result
 
 
-def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
+def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name, in_team_name):
     with open(in_wunderlist_backup_file, encoding='utf-8-sig') as wunderlist_in:
         wunderlist_content = json.load(wunderlist_in)
 
@@ -33,6 +33,10 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
               u'(please note it\'s case-sensitive)'.format(in_workspace_name)
 
     client = asana.Client.access_token(in_asana_token)
+    is_org = client.workspaces.find_by_id(workspace_id)['is_organization']
+    if is_org and not in_team_name:
+        teams = client.teams.find_by_user('me', organization=workspace_id)
+        in_team_name = next(teams)['gid']
     # Wunderlist list ID --> Asana project ID
 
     for project_index, project in enumerate(wunderlist_content):
@@ -41,10 +45,16 @@ def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name):
             project_index + 1,
             len(wunderlist_content)
         ))
-        result = client.projects.create_in_workspace(
-            workspace_id,
-            {'name': project['title']}
-        )
+        if is_org:
+            result = client.projects.create_in_workspace(
+                workspace_id,
+                {'name': project['title'], 'team': in_team_name}
+            )
+        else:
+            result = client.projects.create_in_workspace(
+                workspace_id,
+                {'name': project['title']}
+            )
         asana_project_id = result['gid']
 
         for task_index, task in enumerate(sorted(
@@ -112,10 +122,13 @@ def parse_args():
         help='Asana personal access token'
     )
     parser.add_argument('workspace_name', type=str, help='Asana workspace name')
-
+    parser.add_argument('--team_name',
+                        type=str,
+                        default=None,
+                        help='Team name (in case your Asana workspace is an organization)')
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = parse_args()
-    move_content(args.wunderlist_backup, args.asana_token, args.workspace_name)
+    move_content(args.wunderlist_backup, args.asana_token, args.workspace_name, args.team_name)
