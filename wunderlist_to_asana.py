@@ -1,5 +1,6 @@
 import argparse
 import json
+import codecs
 from operator import itemgetter
 
 import asana
@@ -24,7 +25,7 @@ def build_note_mapping(in_wunderlist_content):
 
 
 def move_content(in_wunderlist_backup_file, in_asana_token, in_workspace_name, in_team_name):
-    with open(in_wunderlist_backup_file, encoding='utf-8-sig') as wunderlist_in:
+    with codecs.open(in_wunderlist_backup_file, encoding='utf-8-sig') as wunderlist_in:
         wunderlist_content = json.load(wunderlist_in)
 
     workspace_id = get_workspace_id(in_asana_token, in_workspace_name)
