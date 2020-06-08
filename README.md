@@ -28,4 +28,4 @@ $ python wunderlist_to_asana.py \
   <Asana workspace name - must exist already> \
   [team_id - if your workspace is an organization]
 ```
-`team_id` doesn't apply to you if your workspace is not an orgamization; if you're indeed part of an organization but don't know/don't care which team\_id should be used, the script will default to the 1st one of the teams you're on as retrieved from Asana.
+`team_id` doesn't apply to you if your workspace is not an organization; if you're indeed part of an organization but don't know/don't care which team\_id should be used, the script will default to the 1st one of the teams you're on as retrieved from Asana.
